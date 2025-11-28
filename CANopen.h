@@ -5,13 +5,13 @@
 #include <Arduino.h>
 // CAN_BUS_SHIELD lib from SeeedStudio
 // make sure DEBUG_MODE = 0 in mcp_can_dfs.h line 35
-#include <mcp_can.h>
 // CAUTION! needed in host app:
 // #include <SPI.h>     // SPI interface with CAN shield
+#include <mbed.h>
 
 
 // read out every msg received
-#define DEBUG
+// #define DEBUG
 
 #define DEFAULT_NODE_ID 0x0001
 #define CAN_RECEIVE_TIMEOUT_MS 100
@@ -52,7 +52,7 @@ class CANopen
 {
 public:
   CANopen() {}
-  void setup();
+  void setup(mbed::CAN &can_bus);
 
   uint8_t read(\
       uint16_t index, uint8_t subIndex,\
@@ -92,7 +92,7 @@ public:
 
   static uint16_t canId;
 private:
-  static MCP_CAN can_bus;
+  static mbed::CAN* can_bus;
   static uint8_t can_msg_buffer[8];
   static uint8_t can_receive_buffer[8];
 
